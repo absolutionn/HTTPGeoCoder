@@ -12,11 +12,11 @@ import (
 type App struct {
 	router *gin.Engine
 	geo    *geocoder.Client
-	port   string
+	port   int
 }
 
 // New ініціалізує додаток та налаштовує маршрутизацію (Routing)
-func New(geo *geocoder.Client, port string) *App {
+func New(geo *geocoder.Client, port int) *App {
 	router := gin.Default() // Стандартний роутер Gin з логером та recovery
 
 	a := &App{
@@ -64,7 +64,7 @@ func (a *App) handleGeocode(c *gin.Context) {
 	lng := *result.Geometry.Lng
 
 	// Генерація правильного посилання на Google Maps
-	googleMapsURL := fmt.Sprintf("http://maps.google.com/maps?q=%f,%f", lat, lng)
+	googleMapsURL := fmt.Sprintf("https://maps.google.com/maps?q=%f,%f", lat, lng)
 
 	// Повертаємо структуровану JSON-відповідь
 	c.JSON(http.StatusOK, gin.H{
@@ -80,5 +80,5 @@ func (a *App) handleGeocode(c *gin.Context) {
 
 // Run запускає HTTP сервер
 func (a *App) Run() error {
-	return a.router.Run(":" + a.port)
+	return a.router.Run(fmt.Sprintf(":%d", a.port))
 }
