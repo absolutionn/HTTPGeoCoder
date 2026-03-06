@@ -9,7 +9,7 @@ import (
 
 type Config struct {
 	OpenCageKey string
-	Port        string
+	Port        int
 }
 
 func Load() *Config {
